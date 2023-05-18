@@ -28,12 +28,37 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+
     app.post("/alltoys", async(req,res)=>{
       const body = req.body;
       const result = await addedtoys.insertOne(body);
       res.send(result)
-
     });
+
+    // app.get("/mytoys/:email", async(req,res)=>{
+    //   const getemail = req.params.email;
+    //   const query = { email: getemail};
+    //   const cursor = await addedtoys.find(query).toArray();
+    //   res.send(cursor)
+    // })
+
+    app.get("/alltoys", async(req,res)=>{
+      let query = {};
+      if(req.query?.email){
+        query = {email: req.query.email}
+      }
+      const result = await addedtoys.find(query).toArray();
+      res.send(result)
+    })
+
+    app.delete("/alltoys/:id", async(req, res)=>{
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await addedtoys.deleteOne(query);
+      res.send(result)
+    })
+
+
     app.get("/alltoys", async(req,res)=>{
       const cursor = addedtoys.find();
       const result = await cursor.toArray();
@@ -46,7 +71,6 @@ async function run() {
       const cursor = await addedtoys.findOne(query);
       res.send(cursor);
     })
-
 
     // eng
     app.get("/eng", async(req, res)=>{
