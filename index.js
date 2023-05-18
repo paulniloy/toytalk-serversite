@@ -38,6 +38,12 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result)
     })
+    app.get("/language", async(req, res)=>{
+      const query = { category : "language"}
+      const cursor = usersubcollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result)
+    })
      
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
