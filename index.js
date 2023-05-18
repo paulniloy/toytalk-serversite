@@ -23,9 +23,25 @@ const client = new MongoClient(uri, {
 
 async function run() {
   const usersubcollection = client.db("subcategory").collection("categorycollection");
+  const addedtoys = client.db("alltoys").collection("toyscollection");
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    app.post("/alltoys", async(req,res)=>{
+      const body = req.body;
+      const result = await addedtoys.insertOne(body);
+      res.send(result)
+
+    });
+    app.get("/alltoys", async(req,res)=>{
+      const cursor = addedtoys.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
+    // eng
     app.get("/eng", async(req, res)=>{
       const query = { category : "Engineering"}
       const cursor = usersubcollection.find(query);
@@ -41,7 +57,7 @@ async function run() {
     })
 
 
-
+    // math
     app.get("/math", async(req, res)=>{
       const query = { category : "math"}
       const cursor = usersubcollection.find(query);
@@ -56,7 +72,7 @@ async function run() {
     })
 
 
-
+    // language
     app.get("/language", async(req, res)=>{
       const query = { category : "language"}
       const cursor = usersubcollection.find(query);
