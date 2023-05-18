@@ -26,8 +26,15 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    app.get("/subcategory", async(req, res)=>{
-      const cursor = usersubcollection.find();
+    app.get("/eng", async(req, res)=>{
+      const query = { category : "Engineering"}
+      const cursor = usersubcollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result)
+    })
+    app.get("/math", async(req, res)=>{
+      const query = { category : "math"}
+      const cursor = usersubcollection.find(query);
       const result = await cursor.toArray();
       res.send(result)
     })
