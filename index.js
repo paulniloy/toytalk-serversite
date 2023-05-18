@@ -48,6 +48,15 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     })
+    app.get("/math/:id", async(req, res)=>{
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const cursor = await usersubcollection.findOne(query);
+      res.send(cursor);
+    })
+
+
+
     app.get("/language", async(req, res)=>{
       const query = { category : "language"}
       const cursor = usersubcollection.find(query);
