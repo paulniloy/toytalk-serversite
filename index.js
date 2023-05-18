@@ -35,12 +35,22 @@ async function run() {
       res.send(result)
     });
 
-    // app.get("/mytoys/:email", async(req,res)=>{
-    //   const getemail = req.params.email;
-    //   const query = { email: getemail};
-    //   const cursor = await addedtoys.find(query).toArray();
-    //   res.send(cursor)
-    // })
+
+    app.put("/alltoys/:id", async(req, res)=>{
+      const id = req.params.id;
+      const updatingbody = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          price: updatingbody.price,
+          quantity : updatingbody.quantity,
+          description : updatingbody.description
+        },
+      };
+      const result = await addedtoys.updateOne(filter, updateDoc, options);
+      res.send(result)
+    })
 
     app.get("/alltoys", async(req,res)=>{
       let query = {};
