@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
@@ -30,19 +30,29 @@ async function run() {
       const query = { category : "Engineering"}
       const cursor = usersubcollection.find(query);
       const result = await cursor.toArray();
-      res.send(result)
+      res.send(result);
     })
+    app.get("/eng/:id", async(req, res)=>{
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const cursor = await usersubcollection.findOne(query);
+      res.send(cursor);
+    })
+
+
+
     app.get("/math", async(req, res)=>{
       const query = { category : "math"}
       const cursor = usersubcollection.find(query);
       const result = await cursor.toArray();
-      res.send(result)
+      res.send(result);
     })
     app.get("/language", async(req, res)=>{
       const query = { category : "language"}
       const cursor = usersubcollection.find(query);
       const result = await cursor.toArray();
-      res.send(result)
+      res.send(result);
     })
      
     // Send a ping to confirm a successful connection
