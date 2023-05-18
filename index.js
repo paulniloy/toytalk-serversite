@@ -39,6 +39,13 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     })
+    app.get("/alltoys/:id", async(req, res)=>{
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const cursor = await addedtoys.findOne(query);
+      res.send(cursor);
+    })
 
 
     // eng
