@@ -57,7 +57,11 @@ async function run() {
       if(req.query?.email){
         query = {email: req.query.email}
       }
-      const result = await addedtoys.find(query).toArray();
+      
+    const options = {
+      sort: { price: -1 },
+    };
+      const result = await addedtoys.find(query, options).toArray();
       res.send(result)
     })
 
@@ -69,14 +73,18 @@ async function run() {
     })
 
 
-    app.get("/alltoys", async(req,res)=>{
-      const cursor = addedtoys.find();
-      const result = await cursor.toArray();
-      res.send(result);
+    app.get("/alltoysbylimit", async(req,res)=>{
+      const page = parseInt(req.query.page) || 0;
+      const limited = parseInt(req.query.limit) || 20;
+      const skip =  page * limited;
+      const cursor = await addedtoys.find().skip(skip).limit(limited).toArray();
+      res.send(cursor);
+      console.log(req.query);
     })
+
+
     app.get("/alltoys/:id", async(req, res)=>{
       const id = req.params.id;
-      console.log(id);
       const query = { _id: new ObjectId(id) };
       const cursor = await addedtoys.findOne(query);
       res.send(cursor);
@@ -85,7 +93,10 @@ async function run() {
     // eng
     app.get("/eng", async(req, res)=>{
       const query = { category : "Engineering"}
-      const cursor = usersubcollection.find(query);
+      const options = {
+        sort: { price: 1 },
+      };
+      const cursor = usersubcollection.find(query, options);
       const result = await cursor.toArray();
       res.send(result);
     })
@@ -101,7 +112,10 @@ async function run() {
     // math
     app.get("/math", async(req, res)=>{
       const query = { category : "math"}
-      const cursor = usersubcollection.find(query);
+      const options = {
+        sort: { price: 1 },
+      };
+      const cursor = usersubcollection.find(query, options);
       const result = await cursor.toArray();
       res.send(result);
     })
@@ -116,7 +130,10 @@ async function run() {
     // language
     app.get("/language", async(req, res)=>{
       const query = { category : "language"}
-      const cursor = usersubcollection.find(query);
+      const options = {
+        sort: { price: 1 },
+      };
+      const cursor = usersubcollection.find(query, options);
       const result = await cursor.toArray();
       res.send(result);
     })
@@ -126,6 +143,17 @@ async function run() {
       const cursor = await usersubcollection.findOne(query);
       res.send(cursor);
     })
+
+
+
+
+    app.get("/totaltoys", async(req,res)=>{
+      const result = await addedtoys.estimatedDocumentCount();
+      res.send({totalnumber : result})
+    })
+
+
+
 
      
     // Send a ping to confirm a successful connection
