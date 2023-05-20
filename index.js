@@ -1,9 +1,9 @@
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
+const cors = require('cors');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
-var cors = require('cors');
 
 app.use(cors())
 app.use(express.json())
@@ -24,11 +24,12 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
-  const usersubcollection = client.db("subcategory").collection("categorycollection");
-  const addedtoys = client.db("alltoys").collection("toyscollection");
   try {
+    const db = client.db("alltoys")
+    const usersubcollection=db.collection("categorycollection");
+    const addedtoys = db.collection("toyscollection");
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
 
     app.post("/alltoys", async(req,res)=>{
@@ -63,7 +64,7 @@ async function run() {
     const options = {
       sort: { price: -1 },
     };
-      const result = await addedtoys.find(query, options).toArray();
+      const result = await addedtoys.find(query).toArray();
       res.send(result)
     })
 
