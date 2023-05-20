@@ -1,5 +1,6 @@
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
+require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
 var cors = require('cors');
@@ -7,10 +8,11 @@ var cors = require('cors');
 app.use(cors())
 app.use(express.json())
 
+
 // niloyp10
 // g9pzZNvk3sJVXcAP
 
-const uri = "mongodb+srv://niloyp10:g9pzZNvk3sJVXcAP@paulniloy.38wqfao.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.user_name}:${process.env.user_password}@paulniloy.38wqfao.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -111,7 +113,7 @@ async function run() {
 
     // math
     app.get("/math", async(req, res)=>{
-      const query = { category : "math"}
+      const query = { category : "Math"}
       const options = {
         sort: { price: 1 },
       };
@@ -129,7 +131,7 @@ async function run() {
 
     // language
     app.get("/language", async(req, res)=>{
-      const query = { category : "language"}
+      const query = { category : "Language"}
       const options = {
         sort: { price: 1 },
       };
