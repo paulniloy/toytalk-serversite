@@ -57,6 +57,32 @@ async function run() {
         query = {email: req.query.email}
       }
       
+    // const options = {
+    //   sort: { price: -1 },
+    // };
+      const result = await addedtoys.find(query).toArray();
+      res.send(result)
+    })
+
+    app.get("/as", async(req,res)=>{
+      let query = {};
+      if(req.query?.email){
+        query = {email: req.query.email}
+      }
+      
+    const options = {
+      sort: { price: 1 },
+    };
+      const result = await addedtoys.find(query, options).toArray();
+      res.send(result)
+    })
+
+    app.get("/des", async(req,res)=>{
+      let query = {};
+      if(req.query?.email){
+        query = {email: req.query.email}
+      }
+      
     const options = {
       sort: { price: -1 },
     };
