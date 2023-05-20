@@ -64,7 +64,7 @@ async function run() {
     const options = {
       sort: { price: -1 },
     };
-      const result = await addedtoys.find(query).toArray();
+      const result = await addedtoys.find(query, options).toArray();
       res.send(result)
     })
 
